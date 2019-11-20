@@ -1,11 +1,17 @@
 //  OpenShift sample Node application
 var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
+app     = express(),
+morgan  = require('morgan');
+const expresslayouts = require("express-ejs-layouts");
+const flash = require('connect-flash');
+const session = require('express-session');
+const passport = require('passport');
     
 Object.assign=require('object-assign')
 
-app.engine('html', require('ejs').renderFile);
+app.use(expresslayouts);
+app.set('view engine', 'ejs')
+
 app.use(morgan('combined'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
@@ -74,18 +80,18 @@ var initDb = function(callback) {
 };
 
 app.get('/', function (req, res) {
-    res.render('index.html');
+    res.render('welcome');
 	console.log("hello i am coming");
   
 });
 
 app.get('/pagecount', function (req, res) {
- res.render('home.html');
+ res.render('layout');
 console.log("hello i am coming");
 });
 
 app.get('/count', function (req, res) {
- res.render('home.html');
+ res.render('dashboard');
 console.log("hello i am coming");
 });
 
