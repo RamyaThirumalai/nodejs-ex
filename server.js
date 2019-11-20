@@ -75,12 +75,20 @@ var initDb = function(callback) {
 
 app.get('/', function (req, res) {
     res.render('index.html');
+	console.log("hello i am coming");
   
 });
 
 app.get('/pagecount', function (req, res) {
- res.send("Hello World");
+ res.render('home.html');
+console.log("hello i am coming");
 });
+
+app.get('/count', function (req, res) {
+ res.render('home.html');
+console.log("hello i am coming");
+});
+
 
 // error handling
 app.use(function(err, req, res, next){
