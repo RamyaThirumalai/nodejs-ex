@@ -2,6 +2,7 @@
 var express = require('express'),
 app     = express(),
 morgan  = require('morgan');
+var path= require('path');
 const expresslayouts = require("express-ejs-layouts");
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -9,15 +10,23 @@ const passport = require('passport');
     
 Object.assign=require('object-assign')
 
+
+
+//Express Enginee
 app.use(expresslayouts);
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs') 
+
+//app.engine('html', require('ejs').renderFile);
+
+// Express body parser
+app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan('combined'))
 
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+/* var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0', */
+    var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+    mongoURLLabel = ""; 
 
 if (mongoURL == null) {
   var mongoHost, mongoPort, mongoDatabase, mongoPassword, mongoUser;
@@ -79,20 +88,46 @@ var initDb = function(callback) {
   });
 };
 
+//welcome page
 app.get('/', function (req, res) {
-    res.render('welcome');
-	console.log("hello i am coming");
+    res.render("welcome");
+	console.log("Welcome Page");
   
 });
 
+//Login Page
 app.get('/pagecount', function (req, res) {
- res.render('layout');
-console.log("hello i am coming");
+ res.render("login");
+console.log("Login Page");
 });
 
-app.get('/count', function (req, res) {
- res.render('dashboard');
-console.log("hello i am coming");
+//Register Page
+app.get('/register', function (req, res) {
+  res.render("register");
+ console.log("Regsiter Page");
+ });
+
+
+ // Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
 });
 
 
@@ -102,11 +137,14 @@ app.use(function(err, req, res, next){
   res.status(500).send('Something bad happened!');
 });
 
+
+
+
 initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
-app.listen(port, ip);
-console.log('Server running on http://%s:%s', ip, port);
+app.listen(8080,"localhost");
+console.log('Server running on http://%s:%s', "localhost", 8080);
 
 module.exports = app ;
