@@ -23,9 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan('combined'))
 
-/* var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0', */
-    var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0', 
+     mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
     mongoURLLabel = ""; 
 
 if (mongoURL == null) {
@@ -144,7 +144,7 @@ initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
-app.listen(8080,"localhost");
-console.log('Server running on http://%s:%s', "localhost", 8080);
+app.listen(port, ip);
+console.log('Server running on http://%s:%s', ip, port);
 
 module.exports = app ;
