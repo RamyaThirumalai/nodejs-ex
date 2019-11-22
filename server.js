@@ -102,14 +102,20 @@ console.log("Login Page");
 });
 
 app.post('/pagecount', function (req, res) {
-  if (name == "ramya" && password == "ramya") {
+  const { name, email, password, password2 } = req.body;
+  if (email == "tramya1095@gmail.com" && password == "ramya") {
     res.render("dashboard");
   }
+});
 
+app.get('/count', function (req, res) {
+  const fetch = require("node-fetch");
+  fetch('https://api.github.com/users/mojombo')
+   .then( (r)=> r.json() )
+   .then( (r) =>  res.send(r));
   
  });
-
-
+ 
  // Express session
 app.use(
   session({
