@@ -101,10 +101,12 @@ app.get('/pagecount', function (req, res) {
 console.log("Login Page");
 });
 
-//Register Page
-app.get('/register', function (req, res) {
-  res.render("register");
- console.log("Regsiter Page");
+app.post('/pagecount', function (req, res) {
+  if (name == "ramya" && password == "ramya") {
+    res.render("dashboard");
+  }
+
+  
  });
 
 
